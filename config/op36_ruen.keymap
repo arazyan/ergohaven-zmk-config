@@ -6,7 +6,7 @@
 #include <dt-bindings/zmk/outputs.h>
 
 // 2.5K display: raise max cursor speed (default 600)
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 1000
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 850
 #include <dt-bindings/zmk/pointing.h>
 
 &mt {
@@ -136,7 +136,7 @@
   &kp Q        &kp W        &kp E         &kp R          &kp T                          &kp Y  &kp U         &kp I         &kp O        &kp P
   &hml LGUI A  &hml LALT S  &hml LSHFT D  &hml LCTRL F   &kp G                          &kp H  &hmr RCTRL J  &hmr RSHFT K  &hmr LALT L  &hmr RGUI SEMICOLON
   &kp Z        &kp X        &kp C         &kp V          &kp B                          &kp N  &kp M         &kp COMMA     &kp DOT      &kp SQT
-                                          &kp BACKSPACE  &mo 4  &kp SPACE    &kp ENTER  &mo 2  &kp TAB
+                                          &kp BACKSPACE  &mo 4  &kp SPACE  &mt 6 ENTER  &mo 2  &kp TAB
             >;
 
             display-name = "Base";
@@ -147,7 +147,7 @@
   &kp RU_CYRILLIC_SHORT_I   &kp RU_CYRILLIC_TSE         &kp RU_CYRILLIC_U          &kp RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                          &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE        &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &kp RU_CYRILLIC_ZE
   &hml LGUI RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LCTRL RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                          &kp RU_CYRILLIC_ER  &hmr RCTRL RU_CYRILLIC_O   &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RGUI RU_CYRILLIC_ZHE
   &kp RU_CYRILLIC_YA        &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM        &kp RU_CYRILLIC_I                           &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN  &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
-                                                                                   &kp TAB                   &mo 4               &kp SPACE    &kp ENTER  &mo 3               &kp BACKSPACE
+                                                                                   &kp TAB                   &mo 4               &kp SPACE  &mt 6 ENTER  &mo 3               &kp BACKSPACE
             >;
 
             display-name = "Ru";
@@ -178,7 +178,7 @@
         nav {
             bindings = <
   &kp N1         &kp N2          &kp N3        &kp N4     &kp N5                      &kp N6           &kp N7           &kp N8           &kp N9        &kp N0
-  &hml LGUI ESC  &kp LALT        &kp LSHFT     &kp LCTRL  &tog 6                      &kp PRINTSCREEN  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
+  &hml LGUI ESC  &kp LALT        &kp LSHFT     &kp LCTRL  &kp ENTER                   &kp PRINTSCREEN  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
   &layer_en      &msc SCRL_DOWN  &msc SCRL_UP  &kp END    &kp CAPS                    &caps_word       &none            &trans           &kp PERIOD    &layer_ru
                                                &trans     &none     &trans    &trans  &mo 5            &trans
             >;
@@ -202,7 +202,7 @@
   &trans    &trans          &trans        &trans    &trans                      &trans          &trans          &trans          &trans        &trans
   &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &kp SCROLLLOCK  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_UP  &mmv MOVE_RIGHT
   &mkp MB5  &trans          &trans        &mkp MB4  &trans                      &trans          &trans          &trans          &trans        &trans
-                                          &trans    &trans    &trans  &tog 6  &trans          &trans
+                                          &trans    &trans    &trans    &trans  &trans          &trans
             >;
 
             display-name = "Mouse";
