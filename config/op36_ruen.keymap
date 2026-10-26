@@ -53,24 +53,28 @@
             bindings = <&kp RU_CYRILLIC_HA>;
             key-positions = <6 7>;
             layers = <1>;
+            timeout-ms = <75>;
         };
 
         hrdsgn {
             bindings = <&kp RU_CYRILLIC_HARD_SIGN>;
             key-positions = <7 8>;
             layers = <1>;
+            timeout-ms = <75>;
         };
 
         cmben {
             bindings = <&layer_en>;
             key-positions = <2 3>;
             layers = <1>;
+            timeout-ms = <75>;
         };
 
         cmbru {
             bindings = <&layer_ru>;
             key-positions = <2 3>;
             layers = <0>;
+            timeout-ms = <75>;
         };
     };
 
