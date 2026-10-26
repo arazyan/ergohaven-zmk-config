@@ -1,5 +1,4 @@
 #include "keys_ru.h"
-#include "keys_ru.h"
 
 // 2.5K display: raise max cursor speed (default 600)
 
@@ -10,6 +9,7 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/outputs.h>
 #include <dt-bindings/zmk/pointing.h>
+#include <zephyr/dt-bindings/input/input-event-codes.h>
 
 &mt {
     quick-tap-ms = <200>;
@@ -44,6 +44,36 @@
             hold-trigger-key-positions = <0 1 2 3 4 10 11 12 13 14 20 21 22 23 24 30 31 32>;
             hold-trigger-on-release;
         };
+
+        // Mouse-move variants for runtime-switchable acceleration (RMK "Accel" keys).
+        // acceleration-exponent: 0 = constant speed, 1 = linear ramp, 2 = aggressive ramp.
+        mmv_lin: mmv_lin {
+            compatible = "zmk,behavior-input-two-axis";
+            #binding-cells = <1>;
+            x-input-code = <INPUT_REL_X>;
+            y-input-code = <INPUT_REL_Y>;
+            time-to-max-speed-ms = <300>;
+            acceleration-exponent = <0>;
+        };
+
+        mmv_acc: mmv_acc {
+            compatible = "zmk,behavior-input-two-axis";
+            #binding-cells = <1>;
+            x-input-code = <INPUT_REL_X>;
+            y-input-code = <INPUT_REL_Y>;
+            time-to-max-speed-ms = <300>;
+            acceleration-exponent = <2>;
+        };
+    };
+
+    mmv_lin_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&mmv_lin>;
+    };
+
+    mmv_acc_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&mmv_acc>;
     };
 
     combos {
@@ -79,10 +109,15 @@
     };
 
     macros {
+        // Sends the KDE Plasma "Switch keyboard layout to ..." shortcut so the OS
+        // layout (and its tray indicator) flips together with the ZMK layer.
+        // Assign in KDE: System Settings -> Keyboard -> Keyboard Shortcuts:
+        //   "Switch keyboard layout to English (US)" = Meta+Ctrl+E
+        //   "Switch keyboard layout to Russian"      = Meta+Ctrl+R
         to_ru: to_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LS(LC(N2))>;
+            bindings = <&kp LGUI(LCTL(R))>;
             label = "TO_RU";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -91,7 +126,7 @@
         to_en: to_en {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LS(LC(N1))>;
+            bindings = <&kp LGUI(LCTL(E))>;
             label = "TO_EN";
             wait-ms = <0>;
             tap-ms = <30>;
@@ -161,10 +196,10 @@
 
         sym_en {
             bindings = <
-  &kp TILDE       &kp LT          &kp EQUAL         &kp GT           &kp GRAVE                    &kp CARET  &kp LBKT         &kp UNDER        &kp RBKT        &kp DLLR
-  &hml LGUI BSLH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LCTRL RPAR  &kp PLUS                     &kp PRCNT  &hmr RCTRL LBRC  &hmr RSHFT SEMI  &hmr LALT RBRC  &hmr RGUI EXCL
-  &kp HASH        &kp STAR        &kp COLON         &kp FSLH         &kp AMPS                     &kp AT     &kp PIPE         &kp COMMA        &kp DOT         &kp QMARK
-                                                    &trans           &mo 5      &trans    &trans  &none      &trans
+  &kp TILDE   &kp LT     &kp EQUAL  &kp GT     &kp GRAVE                    &kp CARET  &kp LBKT  &kp COLON   &kp RBKT  &kp DLLR
+  &kp BSLH    &kp LPAR   &kp MINUS  &kp RPAR   &kp PLUS                     &kp PRCNT  &kp SQT   &kp SEMI    &kp DQT   &kp EXCL
+  &kp HASH    &kp STAR   &kp MINUS  &kp FSLH   &kp AMPS                     &kp AT     &kp PIPE  &kp COMMA   &kp DOT   &kp QMARK
+                                                     &trans    &mo 5     &trans    &trans  &trans    &trans
             >;
 
             display-name = "Symbols";
@@ -172,10 +207,10 @@
 
         sym_ru {
             bindings = <
-  &en TILDE               &en LT          &kp EQUAL         &en GT           &en GRAVE                    &en CARET  &en LBKT  &kp UNDER           &en RBKT    &en DLLR
-  &hml LGUI RU_BACKSLASH  &hml LALT LPAR  &hml LSHFT MINUS  &hml LCTRL RPAR  &kp PLUS                     &kp PRCNT  &en LBRC  &hmr RSHFT RU_SEMI  &en RBRC    &hmr RGUI EXCL
-  &en HASH                &kp STAR        &kp RU_COLON      &kp RU_FSLH      &en AMPS                     &en AT     &en PIPE  &kp RU_COMMA        &kp RU_DOT  &kp RU_QMARK
-                                                            &trans           &mo 5      &trans    &trans  &none      &trans
+  &kp TILDE   &kp LT     &kp EQUAL  &kp GT     &kp GRAVE                    &kp CARET  &kp LBKT  &kp COLON   &kp RBKT  &kp DLLR
+  &kp BSLH    &kp LPAR   &kp MINUS  &kp RPAR   &kp PLUS                     &kp PRCNT  &kp SQT   &kp SEMI    &kp DQT   &kp EXCL
+  &kp HASH    &kp STAR   &kp MINUS  &kp FSLH   &kp AMPS                     &kp AT     &kp PIPE  &kp COMMA   &kp DOT   &kp QMARK
+                                                     &trans    &mo 5     &trans    &trans  &trans    &trans
             >;
 
             display-name = "Symbols";
@@ -206,12 +241,23 @@
         mouse {
             bindings = <
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv MOVE_LEFT  &mmv MOVE_DOWN  &mmv MOVE_UP  &mmv MOVE_RIGHT
+  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_lin MOVE_LEFT  &mmv_lin MOVE_DOWN  &mmv_lin MOVE_UP  &mmv_lin MOVE_RIGHT
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-                                          &trans    &trans    &trans    &trans  &trans  &trans
+                                          &trans    &to 6     &trans    &trans  &to 7     &trans
             >;
 
             display-name = "Mouse";
+        };
+
+        mouse_acc {
+            bindings = <
+  &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
+  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_acc MOVE_LEFT  &mmv_acc MOVE_DOWN  &mmv_acc MOVE_UP  &mmv_acc MOVE_RIGHT
+  &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
+                                          &trans    &to 6     &trans    &trans  &to 7     &trans
+            >;
+
+            display-name = "Mouse (fast)";
         };
     };
 };
