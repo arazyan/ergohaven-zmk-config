@@ -1,8 +1,14 @@
 #include "keys_ru.h"
 
-// 2.5K display: raise max cursor speed (default 600)
+// 2.5K display: raise max cursor speed (default 600). Applies to the MOVE_*
+// macros = the default (ramping) mouse mode speed.
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 900
 
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 850
+// Slow-mouse mode speed (&mmv_slow on the mouse_slow layer, left thumb).
+#define MOVE_LEFT_SLOW  MOVE_X(-300)
+#define MOVE_RIGHT_SLOW MOVE_X(300)
+#define MOVE_UP_SLOW    MOVE_Y(-300)
+#define MOVE_DOWN_SLOW  MOVE_Y(300)
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
@@ -45,17 +51,11 @@
             hold-trigger-on-release;
         };
 
-        // Mouse-move variants for runtime-switchable acceleration (RMK "Accel" keys).
+        // Mouse-move behaviors. Ramping (accel exponent 2) is now the DEFAULT;
+        // &mmv_slow is a slower constant-speed mode (left thumb, mouse_slow
+        // layer). Speed is encoded in the binding params (MOVE_* macros):
+        // MOVE_* = ZMK_POINTING_DEFAULT_MOVE_VAL (900), MOVE_*_SLOW = 300.
         // acceleration-exponent: 0 = constant speed, 1 = linear ramp, 2 = aggressive ramp.
-        mmv_lin: mmv_lin {
-            compatible = "zmk,behavior-input-two-axis";
-            #binding-cells = <1>;
-            x-input-code = <INPUT_REL_X>;
-            y-input-code = <INPUT_REL_Y>;
-            time-to-max-speed-ms = <300>;
-            acceleration-exponent = <0>;
-        };
-
         mmv_acc: mmv_acc {
             compatible = "zmk,behavior-input-two-axis";
             #binding-cells = <1>;
@@ -64,16 +64,25 @@
             time-to-max-speed-ms = <300>;
             acceleration-exponent = <2>;
         };
-    };
 
-    mmv_lin_input_listener {
-        compatible = "zmk,input-listener";
-        device = <&mmv_lin>;
+        mmv_slow: mmv_slow {
+            compatible = "zmk,behavior-input-two-axis";
+            #binding-cells = <1>;
+            x-input-code = <INPUT_REL_X>;
+            y-input-code = <INPUT_REL_Y>;
+            time-to-max-speed-ms = <300>;
+            acceleration-exponent = <0>;
+        };
     };
 
     mmv_acc_input_listener {
         compatible = "zmk,input-listener";
         device = <&mmv_acc>;
+    };
+
+    mmv_slow_input_listener {
+        compatible = "zmk,input-listener";
+        device = <&mmv_slow>;
     };
 
     combos {
@@ -96,19 +105,20 @@
             timeout-ms = <75>;
         };
 
-        cmben {
-            bindings = <&layer_en>;
-            key-positions = <2 3>;
-            layers = <1>;
-            timeout-ms = <75>;
-        };
+        // E+R language-switch combo — disabled for now; re-enable by uncommenting.
+        // cmben {
+        //     bindings = <&layer_en>;
+        //     key-positions = <2 3>;
+        //     layers = <1>;
+        //     timeout-ms = <75>;
+        // };
 
-        cmbru {
-            bindings = <&layer_ru>;
-            key-positions = <2 3>;
-            layers = <0>;
-            timeout-ms = <75>;
-        };
+        // cmbru {
+        //     bindings = <&layer_ru>;
+        //     key-positions = <2 3>;
+        //     layers = <0>;
+        //     timeout-ms = <75>;
+        // };
     };
 
     macros {
@@ -248,26 +258,29 @@
             display-name = "Adjust";
         };
 
+        // Default mouse layer: RAMPING movement (accel exponent 2) at speed 900.
+        // Left thumb -> slow mode (layer 7); right thumb -> reset to this layer.
         mouse {
             bindings = <
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_lin MOVE_LEFT  &mmv_lin MOVE_DOWN  &mmv_lin MOVE_UP  &mmv_lin MOVE_RIGHT
+  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_acc MOVE_LEFT  &mmv_acc MOVE_DOWN  &mmv_acc MOVE_UP  &mmv_acc MOVE_RIGHT
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-                                          &trans    &to 6     &trans    &trans  &to 7     &trans
+                                          &trans    &to 7     &trans    &trans  &to 6     &trans
             >;
 
             display-name = "Mouse";
         };
 
-        mouse_acc {
+        // Slow mouse mode (left thumb): constant speed 300, for precision.
+        mouse_slow {
             bindings = <
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_acc MOVE_LEFT  &mmv_acc MOVE_DOWN  &mmv_acc MOVE_UP  &mmv_acc MOVE_RIGHT
+  &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_slow MOVE_LEFT_SLOW  &mmv_slow MOVE_DOWN_SLOW  &mmv_slow MOVE_UP_SLOW  &mmv_slow MOVE_RIGHT_SLOW
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans          &trans          &trans        &trans
-                                          &trans    &to 6     &trans    &trans  &to 7     &trans
+                                          &trans    &to 7     &trans    &trans  &to 6     &trans
             >;
 
-            display-name = "Mouse (fast)";
+            display-name = "Mouse (slow)";
         };
     };
 };
