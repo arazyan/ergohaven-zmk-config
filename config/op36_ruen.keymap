@@ -3,7 +3,7 @@
 // 2.5K display: raise max cursor speed (default 600). This is the DEFAULT
 // (ramping) mouse speed; precision mode is derived as half of it.
 
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 1000
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1300
 
 // Precision mouse mode: momentary layer (hold left thumb on the mouse layer).
 
@@ -57,7 +57,7 @@
         // exponent 2) at MOVE_* speed; holding the left thumb momentary-layers
         // the precision mode (&mmv_prec: constant speed, half of base) on top.
         // Speed lives in the binding params (v0.3.0 encodes per-axis speed there):
-        // MOVE_* = ZMK_POINTING_DEFAULT_MOVE_VAL (1000), MOVE_*_PREC = 500.
+        // MOVE_* = ZMK_POINTING_DEFAULT_MOVE_VAL (1300), MOVE_*_PREC = 650.
         // acceleration-exponent: 0 = constant speed, 1 = linear ramp, 2 = aggressive ramp.
 
         mmv_acc: mmv_acc {
@@ -130,11 +130,13 @@
     macros {
         // ===== Layout-switching design =====
         // Invariant kept by construction: ZMK `ru` layer ON == OS layout Russian.
-        // - PRIMARY: &cycle_lang on the nav layer (both switch keys). RELATIVE:
-        //   sends the universal "next layout" shortcut Super+Space (default on
-        //   Windows, GNOME, KDE, and our Sway) and flips the ZMK ru layer in
-        //   lockstep with &tog 1. Works on any host with ZERO keybind config,
-        //   requires exactly 2 input sources (us+ru) on the host.
+        // - PRIMARY: dedicated DIRECTIONAL switch keys, one pair per language
+        //   state, via two nav copies: "nav" (layer 4, held from the EN base)
+        //   and "nav_ru" (layer 8, held from the RU base). The key for the
+        //   OPPOSITE language cycles: Super+Space + &to N flips OS layout and
+        //   ZMK base in lockstep (zero keybind config; needs exactly 2 sources).
+        //   The key for the CURRENT language re-asserts (&to_en/&to_ru absolute
+        //   combo — no-op on generic hosts, heals desync where keybinds exist).
         // - RECOVERY: &layer_en / &layer_ru on the adj layer outer thumbs.
         //   ABSOLUTE: force the ZMK base layer (and the OS layout where the
         //   Meta+Ctrl+1/2 shortcut is bound; harmless no-op where it is not).
@@ -169,10 +171,30 @@
             tap-ms = <30>;
         };
 
-        // Relative layout cycle: flips OS layout (Super+Space = "next layout"
-        // everywhere by default) AND the ZMK ru layer (&tog 1) together.
-        // Safe from any layer; direction-agnostic (both sides flip in lockstep).
+        // Directional cycle macros: flip OS layout (Super+Space) and force the
+        // ZMK base via &to N. &to also clears the held nav momentary layer off
+        // the stack, so the switch key never strands a layer under a held thumb.
+        cycle_to_ru: cycle_to_ru {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(SPACE) &to 1>;
+            label = "CYCLE_TO_RU";
+            wait-ms = <0>;
+            tap-ms = <30>;
+        };
 
+        cycle_to_en: cycle_to_en {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&kp LG(SPACE) &to 0>;
+            label = "CYCLE_TO_EN";
+            wait-ms = <0>;
+            tap-ms = <30>;
+        };
+
+        // Generic lockstep cycle (direction-agnostic): flips OS + ZMK together
+        // via &tog. Currently unbound — reserved, e.g. for a re-enabled E+R combo
+        // on layers that don't know the current base language.
         cycle_lang: cycle_lang {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -242,7 +264,7 @@
   &kp RU_CYRILLIC_SHORT_I   &kp RU_CYRILLIC_TSE         &kp RU_CYRILLIC_U          &kp RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                            &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE        &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &kp RU_CYRILLIC_ZE
   &hml LGUI RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LCTRL RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                            &kp RU_CYRILLIC_ER  &hmr RCTRL RU_CYRILLIC_O   &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RGUI RU_CYRILLIC_ZHE
   &kp RU_CYRILLIC_YA        &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM        &kp RU_CYRILLIC_I                             &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN  &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
-                                                                                   &kp TAB                   &mo 4               &kp SPACE    &lt 6 ENTER  &mo 3               &kp BACKSPACE
+                                                                                   &kp TAB                   &mo 8               &kp SPACE    &lt 6 ENTER  &mo 3               &kp BACKSPACE
             >;
 
             display-name = "Ru";
@@ -274,7 +296,7 @@
             bindings = <
   &kp N1       &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6  &kp N7           &kp N8           &kp N9        &kp N0
   &kp LGUI     &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &trans  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
-  &cycle_lang  &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &cycle_lang
+  &to_en       &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &cycle_to_ru
                                              &trans     &trans   &trans    &trans  &mo 5   &trans
             >;
 
@@ -319,6 +341,20 @@
             >;
 
             display-name = "Mouse (precision)";
+        };
+
+        // RU-state nav: copy of "nav", entered by the RU base thumb (&mo 8).
+        // The two language keys swap roles: EN (pos 20) cycles back to EN,
+        // RU (pos 29) re-asserts the current layout.
+        nav_ru {
+            bindings = <
+  &kp N1       &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6  &kp N7           &kp N8           &kp N9        &kp N0
+  &kp LGUI     &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &trans  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
+  &cycle_to_en &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &to_ru
+                                             &trans     &trans   &trans    &trans  &mo 5   &trans
+            >;
+
+            display-name = "Nav (RU)";
         };
     };
 };
