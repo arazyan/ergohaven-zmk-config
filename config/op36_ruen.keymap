@@ -174,6 +174,7 @@
         // Directional cycle macros: flip OS layout (Super+Space) and force the
         // ZMK base via &to N. &to also clears the held nav momentary layer off
         // the stack, so the switch key never strands a layer under a held thumb.
+
         cycle_to_ru: cycle_to_ru {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -195,6 +196,7 @@
         // Generic lockstep cycle (direction-agnostic): flips OS + ZMK together
         // via &tog. Currently unbound — reserved, e.g. for a re-enabled E+R combo
         // on layers that don't know the current base language.
+
         cycle_lang: cycle_lang {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -253,7 +255,7 @@
   &kp Q        &kp W        &kp E         &kp R         &kp T                            &kp Y  &kp U          &kp I         &kp O        &kp P
   &hml LGUI A  &hml LALT S  &hml LSHFT D  &hml LCTRL F  &kp G                            &kp H  &hmr RCTRL J   &hmr RSHFT K  &hmr LALT L  &hmr RGUI SEMICOLON
   &kp Z        &kp X        &kp C         &kp V         &kp B                            &kp N  &kp M          &kp COMMA     &kp DOT      &kp SLASH
-                                          &kp TAB       &mo 4  &kp SPACE    &lt 6 ENTER  &mo 2  &kp BACKSPACE
+                                          &kp TAB       &mo 4  &kp SPACE    &lt 7 ENTER  &mo 2  &kp BACKSPACE
             >;
 
             display-name = "Base";
@@ -264,7 +266,7 @@
   &kp RU_CYRILLIC_SHORT_I   &kp RU_CYRILLIC_TSE         &kp RU_CYRILLIC_U          &kp RU_CYRILLIC_KA        &kp RU_CYRILLIC_IE                            &kp RU_CYRILLIC_EN  &kp RU_CYRILLIC_GHE        &kp RU_CYRILLIC_SHA        &kp RU_CYRILLIC_SHCHA     &kp RU_CYRILLIC_ZE
   &hml LGUI RU_CYRILLIC_EF  &hml LALT RU_CYRILLIC_YERU  &hml LSHFT RU_CYRILLIC_VE  &hml LCTRL RU_CYRILLIC_A  &kp RU_CYRILLIC_PE                            &kp RU_CYRILLIC_ER  &hmr RCTRL RU_CYRILLIC_O   &hmr RSHFT RU_CYRILLIC_EL  &hmr LALT RU_CYRILLIC_DE  &hmr RGUI RU_CYRILLIC_ZHE
   &kp RU_CYRILLIC_YA        &kp RU_CYRILLIC_CHE         &kp RU_CYRILLIC_ES         &kp RU_CYRILLIC_EM        &kp RU_CYRILLIC_I                             &kp RU_CYRILLIC_TE  &kp RU_CYRILLIC_SOFT_SIGN  &kp RU_CYRILLIC_BE         &kp RU_CYRILLIC_YU        &kp RU_CYRILLIC_E
-                                                                                   &kp TAB                   &mo 8               &kp SPACE    &lt 6 ENTER  &mo 3               &kp BACKSPACE
+                                                                                   &kp TAB                   &mo 5               &kp SPACE    &lt 7 ENTER  &mo 3               &kp BACKSPACE
             >;
 
             display-name = "Ru";
@@ -272,10 +274,10 @@
 
         sym_en {
             bindings = <
-  &kp TILDE  &kp LT    &kp EQUAL  &kp GT    &kp GRAVE                    &kp CARET  &kp LBKT  &kp COLON  &kp RBKT  &kp DLLR
-  &kp BSLH   &kp LPAR  &kp MINUS  &kp RPAR  &kp PLUS                     &kp PRCNT  &kp SQT   &kp SEMI   &kp DQT   &kp EXCL
-  &kp HASH   &kp STAR  &kp MINUS  &kp FSLH  &kp AMPS                     &kp AT     &kp PIPE  &kp COMMA  &kp DOT   &kp QMARK
-                                  &trans    &mo 5      &trans    &trans  &trans     &trans
+  &kp TILDE  &kp LT    &kp EQUAL       &kp GT    &kp GRAVE                    &kp CARET  &kp LBKT  &kp COLON  &kp RBKT  &kp DLLR
+  &kp BSLH   &kp LPAR  &kp MINUS       &kp RPAR  &kp PLUS                     &kp PRCNT  &kp SQT   &kp SEMI   &kp DQT   &kp EXCL
+  &kp HASH   &kp STAR  &kp UNDERSCORE  &kp FSLH  &kp AMPS                     &kp AT     &kp PIPE  &kp COMMA  &kp DOT   &kp QMARK
+                                       &trans    &mo 6      &trans    &trans  &trans     &trans
             >;
 
             display-name = "Symbols";
@@ -283,10 +285,10 @@
 
         sym_ru {
             bindings = <
-  &en TILDE    &en LT       &kp EQUAL  &en GT       &en GRAVE                      &en CARET  &en LBKT  &kp RU_COLON  &en RBKT    &en DLLR
-  &kp RU_BSLH  &kp RU_LPAR  &kp MINUS  &kp RU_RPAR  &kp RU_PLUS                    &kp PRCNT  &en SQT   &kp RU_SEMI   &kp RU_DQT  &kp EXCL
-  &kp HASH     &kp STAR     &kp MINUS  &kp RU_FSLH  &en AMPS                       &en AT     &en PIPE  &kp RU_COMMA  &kp RU_DOT  &kp RU_QMARK
-                                       &trans       &mo 5        &trans    &trans  &trans     &trans
+  &en TILDE    &en LT       &kp EQUAL       &en GT       &en GRAVE                      &en CARET  &en LBKT  &kp RU_COLON  &en RBKT    &en DLLR
+  &kp RU_BSLH  &kp RU_LPAR  &kp MINUS       &kp RU_RPAR  &kp RU_PLUS                    &kp PRCNT  &en SQT   &kp RU_SEMI   &kp RU_DQT  &kp EXCL
+  &kp HASH     &kp STAR     &kp UNDERSCORE  &kp RU_FSLH  &en AMPS                       &en AT     &en PIPE  &kp RU_COMMA  &kp RU_DOT  &kp RU_QMARK
+                                            &trans       &mo 6        &trans    &trans  &trans     &trans
             >;
 
             display-name = "Symbols";
@@ -294,67 +296,57 @@
 
         nav {
             bindings = <
-  &kp N1       &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6  &kp N7           &kp N8           &kp N9        &kp N0
-  &kp LGUI     &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &trans  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
-  &to_en       &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &cycle_to_ru
-                                             &trans     &trans   &trans    &trans  &mo 5   &trans
+  &kp N1    &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6           &kp N7           &kp N8           &kp N9        &kp N0
+  &kp LGUI  &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &kp PRINTSCREEN  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
+  &to_en    &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans           &trans           &trans           &kp PERIOD    &cycle_to_ru
+                                          &trans     &trans   &trans    &trans  &mo 6            &trans
             >;
 
             display-name = "Nav";
         };
 
+        nav_ru {
+            bindings = <
+  &kp N1        &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6  &kp N7           &kp N8           &kp N9        &kp N0
+  &kp LGUI      &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &trans  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
+  &cycle_to_en  &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &to_ru
+                                              &trans     &trans   &trans    &trans  &mo 6   &trans
+            >;
+
+            display-name = "Nav (RU)";
+        };
+
         adj {
             bindings = <
-  &bootloader  &kp F1        &kp F2         &kp F3         &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1         &bt BT_SEL 2       &bt BT_SEL 3        &bt BT_SEL 4
-  &kp LGUI     &hml LALT F5  &hml LSHFT F6  &hml LCTRL F7  &kp F8                     &out OUT_BLE  &hmr RCTRL C_VOL_DN  &hmr RSHFT C_MUTE  &hmr LALT C_VOL_UP  &kp RGUI
-  &bt BT_CLR   &kp F9        &kp F10        &kp F11        &kp F12                    &out OUT_USB  &kp C_PREV           &kp C_PP           &kp C_NEXT          &studio_unlock
-                                            &layer_en      &trans   &trans    &trans  &trans        &layer_ru
+  &bt BT_CLR  &kp F1        &kp F2         &kp F3         &kp F4                     &bt BT_SEL 0  &bt BT_SEL 1         &bt BT_SEL 2       &bt BT_SEL 3        &bt BT_SEL 4
+  &kp LGUI    &hml LALT F5  &hml LSHFT F6  &hml LCTRL F7  &kp F8                     &out OUT_BLE  &hmr RCTRL C_VOL_DN  &hmr RSHFT C_MUTE  &hmr LALT C_VOL_UP  &kp RGUI
+  &trans      &kp F9        &kp F10        &kp F11        &kp F12                    &out OUT_USB  &kp C_PREV           &kp C_PP           &kp C_NEXT          &studio_unlock
+                                           &layer_en      &trans   &trans    &trans  &trans        &layer_ru
             >;
 
             display-name = "Adjust";
         };
-
-        // Default mouse layer: RAMPING movement (accel exponent 2) at speed 1000.
-        // Hold left thumb (pos 31) = momentary precision mode (layer 7); release
-        // = straight back to ramping. No latched states.
 
         mouse {
             bindings = <
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans              &trans              &trans            &trans
   &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_acc MOVE_LEFT  &mmv_acc MOVE_DOWN  &mmv_acc MOVE_UP  &mmv_acc MOVE_RIGHT
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans              &trans              &trans            &trans
-                                          &trans    &mo 7     &trans    &trans  &none   &trans
+                                          &trans    &mo 8     &trans    &trans  &none   &trans
             >;
 
             display-name = "Mouse";
         };
-
-        // Precision mouse mode: constant speed (500 = half of base), active only
-        // while the left thumb is held (layer stacked over "mouse").
 
         mouse_precision {
             bindings = <
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans                    &trans                    &trans                  &trans
   &mkp MB2  &msc SCRL_DOWN  &msc SCRL_UP  &mkp MB1  &mkp MB3                    &trans  &mmv_prec MOVE_LEFT_PREC  &mmv_prec MOVE_DOWN_PREC  &mmv_prec MOVE_UP_PREC  &mmv_prec MOVE_RIGHT_PREC
   &trans    &trans          &trans        &trans    &trans                      &trans  &trans                    &trans                    &trans                  &trans
-                                          &trans    &mo 7     &trans    &trans  &none   &trans
+                                          &trans    &mo 8     &trans    &trans  &none   &trans
             >;
 
             display-name = "Mouse (precision)";
-        };
-
-        // RU-state nav: copy of "nav", entered by the RU base thumb (&mo 8).
-        // The two language keys swap roles: EN (pos 20) cycles back to EN,
-        // RU (pos 29) re-asserts the current layout.
-        nav_ru {
-            bindings = <
-  &kp N1       &kp N2          &kp N3        &kp N4     &kp N5                     &kp N6  &kp N7           &kp N8           &kp N9        &kp N0
-  &kp LGUI     &kp LALT        &kp LSHFT     &kp LCTRL  &kp ESC                    &trans  &hmr RCTRL LEFT  &hmr RSHFT DOWN  &hmr LALT UP  &hmr RGUI RIGHT
-  &cycle_to_en &msc SCRL_DOWN  &msc SCRL_UP  &trans     &trans                     &trans  &trans           &trans           &kp PERIOD    &to_ru
-                                             &trans     &trans   &trans    &trans  &mo 5   &trans
-            >;
-
-            display-name = "Nav (RU)";
         };
     };
 };
