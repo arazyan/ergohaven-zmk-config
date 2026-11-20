@@ -1,16 +1,20 @@
 #include "keys_ru.h"
 
 // 2.5K display: raise max cursor speed (default 600). This is the DEFAULT
-// (ramping) mouse speed; precision mode is derived as half of it.
+// (ramping) mouse speed of the base mouse layer. Precision mode is NOT
+// derived from it — it is pinned at PREC_MOVE_VAL below, so raising the
+// base speed doesn't affect the fine-tuning layer.
 
-#define ZMK_POINTING_DEFAULT_MOVE_VAL 1300
+#define ZMK_POINTING_DEFAULT_MOVE_VAL 1500
 
 // Precision mouse mode: momentary layer (hold left thumb on the mouse layer).
+// Pinned at 650: intentionally independent of the base knob above.
+#define PREC_MOVE_VAL 650
 
-#define MOVE_LEFT_PREC  MOVE_X(-(ZMK_POINTING_DEFAULT_MOVE_VAL / 2))
-#define MOVE_RIGHT_PREC MOVE_X(ZMK_POINTING_DEFAULT_MOVE_VAL / 2)
-#define MOVE_UP_PREC    MOVE_Y(-(ZMK_POINTING_DEFAULT_MOVE_VAL / 2))
-#define MOVE_DOWN_PREC  MOVE_Y(ZMK_POINTING_DEFAULT_MOVE_VAL / 2)
+#define MOVE_LEFT_PREC  MOVE_X(-PREC_MOVE_VAL)
+#define MOVE_RIGHT_PREC MOVE_X(PREC_MOVE_VAL)
+#define MOVE_UP_PREC    MOVE_Y(-PREC_MOVE_VAL)
+#define MOVE_DOWN_PREC  MOVE_Y(PREC_MOVE_VAL)
 
 #include <zephyr/dt-bindings/input/input-event-codes.h>
 #include <behaviors.dtsi>
@@ -55,9 +59,10 @@
 
         // Mouse-move behaviors. The mouse layer uses ramping (&mmv_acc, accel
         // exponent 2) at MOVE_* speed; holding the left thumb momentary-layers
-        // the precision mode (&mmv_prec: constant speed, half of base) on top.
+        // the precision mode (&mmv_prec: constant speed) on top.
         // Speed lives in the binding params (v0.3.0 encodes per-axis speed there):
-        // MOVE_* = ZMK_POINTING_DEFAULT_MOVE_VAL (1300), MOVE_*_PREC = 650.
+        // MOVE_* = ZMK_POINTING_DEFAULT_MOVE_VAL (1500),
+        // MOVE_*_PREC = PREC_MOVE_VAL (650, pinned, independent of the base knob).
         // acceleration-exponent: 0 = constant speed, 1 = linear ramp, 2 = aggressive ramp.
 
         mmv_acc: mmv_acc {
