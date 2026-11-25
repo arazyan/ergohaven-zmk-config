@@ -2,10 +2,24 @@ manifest:
   remotes:
     - name: ergohaven
       url-base: https://github.com/ergohaven
+    - name: fustopoke
+      url-base: https://github.com/fustopoke
   projects:
     - name: ergohaven-zmk
       remote: ergohaven
       revision: main
       import: config/west.yml
+    # Azoteq IQS5xx touchpad driver — fork carrying the polling-mode patch
+    # for the K:04 module socket (RDY line is not routed to the MCU).
+    # Required by the k04_mini builds.
+    - name: zmk-driver-azoteq-iqs5xx
+      remote: fustopoke
+      revision: k04-polling
+    # Colored battery / BT profile / connection blinks on the onboard
+    # WS2812 indicator LED (chosen zmk,underglow in the k04_mini shield).
+    # Fork branch carrying the ZMK v0.3 compatibility patch.
+    - name: zmk-smart-rgbled-widget
+      remote: fustopoke
+      revision: v0.3-compat
   self:
     path: config

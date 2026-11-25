@@ -1,7 +1,10 @@
-# Ergohaven OP36 — ZMK config
+# Ergohaven OP36 + K:04 Mini — ZMK config
 
 Personal [ZMK](https://zmk.dev) firmware config for the
-[Ergohaven OP36 (Omega Point 36)](https://ergohaven.xyz/) split keyboard.
+[Ergohaven OP36 (Omega Point 36)](https://ergohaven.xyz/) split keyboard and
+the Ergohaven **K:04 Mini** (the K:04 Mini files come from
+[fustopoke/ergohaven-zmk-config](https://github.com/fustopoke/ergohaven-zmk-config)
+— see [CROSS_OS.md](CROSS_OS.md) for its design notes).
 
 This repo is a ZMK *user config*: a west manifest plus Kconfig and keymap
 files in `config/`. The board definitions and firmware come from
@@ -9,15 +12,17 @@ files in `config/`. The board definitions and firmware come from
 (Ergohaven's ZMK fork), pulled in via `config/west.yml` — it is not vendored
 here.
 
-This repo focuses on a single keymap: **`op36_ruen`** — a dual-language
+This repo focuses on the **`op36_ruen`** keymap: a dual-language
 EN (QWERTY) / RU (ЙЦУКЕН) layout with lockstep layout switching, plus a mouse
-layer with ramping speed and a momentary precision mode.
+layer with ramping speed and a momentary precision mode. The **K:04 Mini**
+files (`k04_mini*`, `boards/shields/k04_mini/`, `CROSS_OS.md`) were imported
+as-is from [fustopoke/ergohaven-zmk-config](https://github.com/fustopoke/ergohaven-zmk-config).
 
 ## Repository layout
 
 | Path | Purpose |
 |---|---|
-| `config/west.yml` | West manifest: fetches `ergohaven-zmk` (boards + firmware) |
+| `config/west.yml` | West manifest: fetches `ergohaven-zmk` (boards + firmware) and the two `fustopoke` driver forks needed by K:04 Mini |
 | `config/op36.conf` | Kconfig for OP36 builds: sleep/soft-off, battery reporting, combo limits, pointing |
 | `config/op36_qube.conf` | Kconfig overlay for Qube builds (no sleep, pointing on) |
 | `config/op36.json` | Physical layout geometry (KLE-style JSON) used by layout renderers |
@@ -25,6 +30,12 @@ layer with ramping speed and a momentary precision mode.
 | `config/op36_ruen.keymap` | **The main keymap** — see below |
 | `config/op36_ruen.json` | Symlink to `op36.json` (same geometry, different keymap name) |
 | `config/keys_ru.h` | Cyrillic letter and RU-layout symbol keycodes (HID usage IDs) |
+| `config/k04_mini.conf` | Kconfig for K:04 Mini: sleep/battery, WS2812 status LED, IQS5xx touchpad polling |
+| `config/k04_mini.keymap` | K:04 Mini RuEn keymap (cross-OS language switching, LED layer colors) |
+| `config/k04_mini.json` | K:04 Mini physical layout geometry (keymap editor) |
+| `boards/shields/k04_mini/` | Local shield for the K:04 Mini (matrix pins, WS2812, touchpad overlays) — not in upstream ergohaven-zmk |
+| `zephyr/module.yml` | Makes this repo a Zephyr module so `boards/` is picked up (K:04 Mini) |
+| `CROSS_OS.md` | K:04 Mini host-side setup for Linux / Windows / macOS |
 | `build.yaml` | Build matrix for CI |
 | `.github/workflows/build.yml` | Calls Ergohaven's reusable user-config build workflow |
 
@@ -159,6 +170,9 @@ merged into a single `firmware` archive on the run.
 | `op36_qube-ergohaven-zmk` | Qube variant (display + dongle screen), stock keymap |
 | `op36_qube_ruen-ergohaven-zmk` | Qube variant, `op36_ruen` |
 | `op36_left_qube-ergohaven-zmk` | left half with Qube (no display UI) |
+| `k04_mini_left-ergohaven-zmk` | K:04 Mini central (left) half, RuEn keymap, ZMK Studio enabled |
+| `k04_mini_right-ergohaven-zmk` | K:04 Mini peripheral (right) half, touchpad module |
+| `settings_reset-ergohaven-zmk` | K:04 Mini settings reset (flash once per half when migrating from RMK) |
 
 Flash by dragging the `.uf2` into the keyboard's USB mass-storage bootloader,
 or over ZMK Studio (Studio is enabled via `CONFIG_ZMK_STUDIO=y` + the

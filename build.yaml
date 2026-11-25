@@ -25,3 +25,15 @@ include:
     artifact-name: op36_qube_ruen-ergohaven-zmk
   - board: ergohaven
     shield: op36_left_qube
+  # K:04 Mini (from fustopoke/ergohaven-zmk-config):
+  # Central (left) half — ZMK Studio enabled over USB.
+  - board: ergohaven
+    shield: k04_mini_left
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
+  # Peripheral (right) half with the touchpad module.
+  - board: ergohaven
+    shield: k04_mini_right
+  # Settings reset — flash once per half when migrating from RMK.
+  - board: ergohaven
+    shield: settings_reset

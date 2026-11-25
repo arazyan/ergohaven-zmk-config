@@ -13,12 +13,20 @@ README.md for the full picture.
 
 ## Scope
 
-- **OP36 only.** Other keyboards' files (velvet, k03, imperial44, trackball)
-  were deliberately deleted. Do not resurrect them or add new keyboards
-  without being asked.
+- **OP36 + K:04 Mini.** Other keyboards' files (velvet, k03, imperial44,
+  trackball) were deliberately deleted. Do not resurrect them or add new
+  keyboards without being asked.
 - The main workhorse is **`config/op36_ruen.keymap`** (EN/RU dual-language
   keymap with a mouse layer). `config/op36.keymap` is the stock QWERTY
   fallback keymap; treat it as reference, not a target.
+- **K:04 Mini** support (`config/k04_mini.*`, `boards/shields/k04_mini/`,
+  `zephyr/module.yml`, `CROSS_OS.md`) was imported verbatim from
+  `fustopoke/ergohaven-zmk-config` at its commit `1afd537`. It is the friend's
+  design: one keymap for Linux/Windows/macOS, language switching via a single
+  "next input source" shortcut (`&os_lang_tog`), NOT the OP36
+  `Meta+Ctrl+1/2` scheme below — golden rules 1–2 are OP36-specific. When
+  touching k04 files, re-read `CROSS_OS.md` first; upstream `ergohaven-zmk`
+  has no k04_mini shield, so `boards/` here is the only source.
 - `config/keys_ru.h` is generated data (Unicode license header) — do not
   reformat or hand-edit definitions; add nothing.
 
@@ -30,9 +38,9 @@ README.md for the full picture.
    rationale is the comment block above the `macros` section in
    `op36_ruen.keymap` — read it first, and update it in the same commit when
    the design changes.
-2. Host layout shortcuts are **`Meta+Ctrl+1` (EN) / `Meta+Ctrl+2` (RU)**.
-   Digits, never letters — the RU layout remaps letters, which breaks
-   keysym-matched host shortcuts.
+2. Host layout shortcuts are **`Meta+Ctrl+1` (EN) / `Meta+Ctrl+2` (RU)**
+   (OP36 keymaps). Digits, never letters — the RU layout remaps letters, which
+   breaks keysym-matched host shortcuts.
 3. The design comments in `op36_ruen.keymap` are the spec. When in doubt, the
    comments + recent git history (`git log -- config/op36_ruen.keymap`) are
    more authoritative than intuition. Several recent commits are by
