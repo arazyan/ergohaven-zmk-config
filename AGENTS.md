@@ -27,6 +27,16 @@ README.md for the full picture.
   `Meta+Ctrl+1/2` scheme below — golden rules 1–2 are OP36-specific. When
   touching k04 files, re-read `CROSS_OS.md` first; upstream `ergohaven-zmk`
   has no k04_mini shield, so `boards/` here is the only source.
+- **K:04 hardware invariants** (see the diagnosis section in `CROSS_OS.md`):
+  the onboard WS2812 must stay on **SPI1, never SPI3** — nRF52840 anomaly 198
+  corrupts SPIM3 EasyDMA TX while the BLE stack runs, and no workaround
+  exists for SoftDevice builds. `config/west.yml` pins the three external
+  modules to exact SHAs (branch name in a trailing comment); the module-side
+  LED/touchpad power fixes live in `patches/` as `git am` patches against
+  those SHAs (fustopoke repos are not pushable from here) — bumping a
+  revision means revalidating/rebasing the matching patch in the same commit.
+  Treat `config/k04_mini.keymap` as the friend's frozen design unless asked
+  to change it.
 - `config/keys_ru.h` is generated data (Unicode license header) — do not
   reformat or hand-edit definitions; add nothing.
 
